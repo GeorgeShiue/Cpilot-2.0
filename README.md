@@ -17,6 +17,8 @@ C-pilot 將使用者從傳統多頁手動操作中解放，提升校務工作的
 
 ### 系統架構
 
+![](./images/System_Architecture.png)
+
 - **MAS組成（LangGraph x Planner / Executor / Replanner / Solver）**
     
     為了解決校務查詢與操作流程中需多次決策與錯誤處理的問題，使用LangGraph實作四階段代理架構：
