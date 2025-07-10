@@ -13,7 +13,7 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 os.environ["OPENAI_API_KEY"] = api_key
 
-SCREENSHOT_FOLDER_PATH = "Screenshot"
+SCREENSHOT_FOLDER_PATH = "./Screenshot"
 
 def clean_containers(graph: ExecutionGraph):
     if isinstance(graph, ExecutionGraph) and graph.agent.executor_name == "Pipeline Executor":
@@ -49,8 +49,20 @@ async def stream_chat(user_message, messages: List[gr.ChatMessage], execution_gr
     if execution_graph.agent.executor_name == "Pipeline Executor":
         execution_graph.wait_browser_init()
 
+        # 修改為有錯誤處理的版本
         if os.path.exists(SCREENSHOT_FOLDER_PATH):
-            shutil.rmtree(SCREENSHOT_FOLDER_PATH)
+            try:
+                shutil.rmtree(SCREENSHOT_FOLDER_PATH)
+            except PermissionError:
+                print(f"Warning: Cannot remove {SCREENSHOT_FOLDER_PATH}, it may be in use")
+                # 嘗試清空資料夾內容而非刪除資料夾
+                for filename in os.listdir(SCREENSHOT_FOLDER_PATH):
+                    file_path = os.path.join(SCREENSHOT_FOLDER_PATH, filename)
+                    try:
+                        if os.path.isfile(file_path):
+                            os.remove(file_path)
+                    except PermissionError:
+                        continue
         os.makedirs(SCREENSHOT_FOLDER_PATH, exist_ok=True)
         execution_graph.set_screenshot_folder_path(SCREENSHOT_FOLDER_PATH)
 
@@ -100,7 +112,8 @@ with gr.Blocks(css=".fullscreen-chatbot { height: calc(100vh - 200px) !important
         outputs=[user_query, chatbot, execution_graph],
     )
 
-demo.launch()
+# demo.launch()
+demo.launch(share=True)
 
 # Who is the headmaster of National Central University in Taiwan?
 
