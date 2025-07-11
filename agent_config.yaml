@@ -148,7 +148,7 @@ Pipeline Executor:
 
 Replanner:
   llm_config:
-    model: gpt-4.1-mini
+    model: gpt-4.1
     temperature: 0
 
   prompt: |
@@ -163,12 +163,12 @@ Replanner:
     Your original plan was this:
     {plan}
 
-    You have currently done the following steps:
+    The last step you have completed is:
     {past_steps}
 
     Update your plan accordingly.
 
-    You should substitute the expected # result with the actual result when you update the plan.
+    When you are updating the original plan, substitute the expected result of the last step in original plan with the actual result.
 
     If the step in original plan is a function call, you should not change the function name, the parameters, and the expected result. 
     If the step in original plan is a function call, you should not skip any step in original plan until all steps in original plan are done. A step is done when the # result in past_steps is null.

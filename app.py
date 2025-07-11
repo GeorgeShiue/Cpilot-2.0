@@ -10,8 +10,7 @@ from base64 import b64encode
 from graph import ExecutionGraph
 
 load_dotenv()
-api_key = os.getenv("API_KEY")
-os.environ["OPENAI_API_KEY"] = api_key
+api_key = os.getenv("OPENAI_API_KEY")
 
 SCREENSHOT_FOLDER_PATH = "./Screenshot"
 
@@ -112,10 +111,12 @@ with gr.Blocks(css=".fullscreen-chatbot { height: calc(100vh - 200px) !important
         outputs=[user_query, chatbot, execution_graph],
     )
 
-# demo.launch()
-demo.launch(share=True)
+demo.launch()
+# demo.launch(share=True)
 
 # Who is the headmaster of National Central University in Taiwan?
+
+# 我是一個大學三年級的學生，請給我適合申請的獎學金
 
 # Please help me apply leave application.
 # Start Date is 2025/5/30 and End Date is 2025/5/31.
