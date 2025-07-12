@@ -28,13 +28,12 @@ class AgentFactory():
     def print_agent_parameter(agent_name):
         llm_config, prompt, tool_list = AgentFactory.extract_agent_parameter_yaml(agent_name)
 
-        print(f"{agent_name}_llm_config:")
+        print(f"{agent_name} llm config:")
         for key, value in llm_config.items():
             print(f"    {key}: {value}")
         print()
 
-        print(f"{agent_name}_prompt:\n  {prompt}")
-        print()
+        print(f"{agent_name} prompt:\n  {prompt}")
 
     @staticmethod
     def create_react_agent_with_yaml(agent_name, tool_dicts=None, response_format=None):
@@ -61,7 +60,6 @@ class AgentFactory():
             print(f"{agent_name}_tool_list: ")
             for tool in selected_tool_list:
                 print(f"    {tool.name}")
-        print()
 
         return agent
 

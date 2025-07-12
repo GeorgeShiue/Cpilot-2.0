@@ -27,6 +27,9 @@ async def stream_chat(user_message, messages: List[gr.ChatMessage], execution_gr
 
     # *第一次輸入選擇模組
     if user_message == "Search" or user_message == "Pipeline":
+        os.system('clear')  # 清除先前的終端機訊息
+        print("=" * 10 + " Initialize Execution Graph " + "=" * 10)
+
         executor = user_message + " Executor"
         execution_graph = ExecutionGraph(executor)
 
@@ -35,7 +38,9 @@ async def stream_chat(user_message, messages: List[gr.ChatMessage], execution_gr
 
         return
 
-    messages.append(gr.ChatMessage(role="assistant", content="啟動模組對話中，請稍後..."))
+    print("\n" + "=" * 10 + " Start Chat " + "=" * 10)
+
+    messages.append(gr.ChatMessage(role="assistant", content="## Agent Messages\n"))
     yield "", messages, execution_graph
 
     config = {"recursion_limit": 50}
@@ -70,13 +75,13 @@ async def stream_chat(user_message, messages: List[gr.ChatMessage], execution_gr
             for agent, state in event.items():
                 # *輸出最終回覆給使用者檢視
                 if agent == "Solver": 
-                    messages.append(gr.ChatMessage(role="assistant", content=f"Final Response:\n{state['response']}\n"))
+                    messages.append(gr.ChatMessage(role="assistant", content=f"## Final Response (Solver):\n{state['response']}\n"))
                 # *記錄聊天紀錄
                 elif agent != "__end__": 
                     response = f"{agent}:\n" 
                     for key, value in state.items():
                         if key != "history":
-                            response += f"    {key}: {value}\n"
+                            response += f"{key}: {value}\n"
 
                     # *顯示 Pipeline 模組操作結果截圖
                     if agent == "Pipeline Executor":
@@ -86,7 +91,7 @@ async def stream_chat(user_message, messages: List[gr.ChatMessage], execution_gr
                             data = b64encode(f.read()).decode("utf-8")
                             response += f"![{current_screenshot_name}](data:image/png;base64,{data})\n"
 
-                    messages.append(gr.ChatMessage(role="assistant", content=response))
+                    messages.append(gr.ChatMessage(role="assistant", content=response + "_" * 10))
 
                 yield "", messages, execution_graph
         clean_containers(execution_graph)
@@ -98,6 +103,8 @@ async def stream_chat(user_message, messages: List[gr.ChatMessage], execution_gr
         clean_containers(execution_graph)
 
 with gr.Blocks(css=".fullscreen-chatbot { height: calc(100vh - 200px) !important; overflow-y: auto; ") as demo:
+    os.system('clear')  # 清除先前的終端機訊息
+
     init_message = [
         gr.ChatMessage(role="assistant", content="請輸入 Search 或 Pipeline 以啟用系統模組"),
     ]
@@ -116,7 +123,7 @@ demo.launch()
 
 # Who is the headmaster of National Central University in Taiwan?
 
-# 我是一個大學三年級的學生，請給我適合申請的獎學金
+# 我是一個大學三年級的學生，請給我和出國相關的獎學金資訊
 
 # Please help me apply leave application.
 # Start Date is 2025/5/30 and End Date is 2025/5/31.

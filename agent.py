@@ -32,13 +32,10 @@ class ExecutionAgent():
 
     def __init__(self, executor_name):
         self.executor_name = executor_name
-
         self.tool = self.init_execution_tool()
+        self.planner, self.executor, self.replanner, self.solver = self.create_agents()
 
-        self.planner = self.create_planner_agent()
-        self.executor = self.create_executor_agent()
-        self.replanner = self.create_replanner_agent()
-        self.solver = self.create_solver_agent()
+        
 
     def init_execution_tool(self):
         if self.executor_name == "Search Executor":
@@ -103,6 +100,17 @@ class ExecutionAgent():
         solver = solver_prompt | solver_llm
         return solver
     
+    def create_agents(self):
+        planner = self.create_planner_agent()
+        print("=" * 20)
+        executor = self.create_executor_agent()
+        print("=" * 20)
+        replanner = self.create_replanner_agent()
+        print("=" * 20)
+        solver = self.create_solver_agent()
+
+        return planner, executor, replanner, solver
+
     # def wait_browser_init(self):
     #     if self.create_browser_thread.is_alive():
     #         print("browser is starting...")

@@ -95,7 +95,7 @@ class ExecutionGraph():
 
         graph = clean_graph.compile() # This compiles it into a LangChain Runnable, meaning you can use it as you would any other runnable
         # GraphFactory.save_graph_mermaid(graph, "Execution Graph") # 測試GraphFactory的save_graph_mermaid功能
-        print("Execution Graph is created.")
+        # print("Execution Graph is created.")
 
         return graph
     

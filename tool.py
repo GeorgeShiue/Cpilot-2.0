@@ -213,8 +213,9 @@ def read_agent_parameter_yaml():
 @tool
 def website_info_retriever(query: str) -> str:
     """Based on user's query perform RAG retrieval on the website information database."""
+    print("=" * 10 + " Website Info Retriever " + "=" * 10)
     print(f"Query: {query}")
-    print("---")
+    print("-" * 3)
 
     vectorstore = Chroma(
         embedding_function=OpenAIEmbeddings(),
@@ -282,6 +283,8 @@ async def crawl_links_async(links, base_url):
 @tool
 def website_links_crawler(link: str) -> str:
     """Takes url of a website and reads the HTML content of the website and then extracts all the links on that website."""
+    print("=" * 10 + " Website Links Crawler " + "=" * 10)
+    
     extract_link = re.search(r'(https?://[^\]]+)', link)
     url = extract_link.group(1) if extract_link else None
     
@@ -317,6 +320,8 @@ def website_links_crawler(link: str) -> str:
 @tool
 def website_reader(url: str) -> str:
     """Takes url of a website and read the HTML content of a website."""
+    print("=" * 10 + " Website Reader " + "=" * 10)
+
     try: 
         response = requests.get(url, verify=False)
         encoding = response.apparent_encoding
